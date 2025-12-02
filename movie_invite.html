@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,7 +14,7 @@
             min-height: 100vh;
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fce4ec; /* Light pink background */
+            background-color: #f4f4f9;
             text-align: center;
         }
 
@@ -22,64 +22,137 @@
             background-color: #ffffff;
             padding: 40px;
             border-radius: 15px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             max-width: 90%;
-            width: 450px;
+            width: 500px;
         }
 
         h1 {
-            color: #d81b60; /* Deep pink */
+            color: #e53935; /* Movie-themed red */
             margin-bottom: 20px;
-            font-size: 2.2em;
+            font-size: 2.5em;
         }
 
         p {
-            color: #4a4a4a;
-            font-size: 1.1em;
-            margin-bottom: 35px;
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 30px;
         }
 
         .buttons {
             display: flex;
             justify-content: center;
-            gap: 10px; /* Reduced gap */
-            height: 50px; /* Define height for button container */
+            gap: 20px;
             position: relative; /* For the 'No' button positioning */
-            margin-top: 20px;
         }
 
         .btn {
-            padding: 8px 15px; /* Smaller padding */
+            padding: 12px 25px;
             border: none;
-            border-radius: 6px; /* Smaller border radius */
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.9em; /* Smaller font size */
-            transition: all 0.2s ease;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
             font-weight: bold;
-            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         #yesBtn {
-            background-color: #00bcd4; /* Teal for Yes */
+            background-color: #4caf50; /* Green for Yes */
             color: white;
             z-index: 10;
         }
 
         #yesBtn:hover {
-            background-color: #00acc1;
-            transform: scale(1.08);
+            background-color: #45a049;
+            transform: scale(1.05);
         }
 
         #noBtn {
-            background-color: #ff5252; /* Bright red for No */
+            background-color: #f44336; /* Red for No */
             color: white;
             position: absolute; /* Key for the running away effect */
-            transition: all 0s; /* No transition for movement, makes it instant and jarring */
+            transition: top 0s, left 0s; /* Instant movement */
             z-index: 5;
-            pointer-events: none; /* ***NEW: Makes the button completely unclickable/ignores mouse events*** */
-            user-select: none; /* Prevents text selection on movement */
         }
 
         /* Success Message Styling */
         #successMessage {
+            margin-top: 30px;
+            color: #4caf50;
+            font-size: 1.5em;
+            display: none; /* Hidden by default */
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Hey, I have a Question... 🤔</h1>
+        <p>Would you like to watch a movie with me this weekend? Popcorn is on me! 🍿</p>
+
+        <div class="buttons">
+            <button id="yesBtn" class="btn" onclick="handleYes()">YES! Absolutely.</button>
+            <button id="noBtn" class="btn">No, maybe another time.</button>
+        </div>
+
+        <p id="successMessage">🎉 **YES!** That's amazing! I'll text you the details! (You didn't really have a choice, did you? 😉)</p>
+    </div>
+
+    <script>
+        // JavaScript for the 'No' button magic
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const container = document.querySelector('.container');
+        const buttonsDiv = document.querySelector('.buttons');
+
+        // Function to make the 'No' button run away
+        noBtn.addEventListener('mouseover', () => {
+            if (noBtn.style.position === 'absolute') {
+                const maxX = buttonsDiv.clientWidth - noBtn.offsetWidth;
+                const maxY = buttonsDiv.clientHeight - noBtn.offsetHeight;
+
+                // Generate a random position within the buttons container
+                const newX = Math.random() * maxX;
+                const newY = Math.random() * maxY;
+
+                noBtn.style.left = `${newX}px`;
+                noBtn.style.top = `${newY}px`;
+            }
+        });
+
+        // The default position should be set to allow random movement
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set initial absolute position relative to the buttons container
+            const initialRect = noBtn.getBoundingClientRect();
+            const parentRect = buttonsDiv.getBoundingClientRect();
+
+            // Calculate the initial offset for the absolute positioning
+            noBtn.style.position = 'absolute';
+            noBtn.style.top = `${initialRect.top - parentRect.top}px`;
+            noBtn.style.left = `${initialRect.left - parentRect.left}px`;
+        });
+
+
+        // Function to handle the 'Yes' click
+        function handleYes() {
+            // Hide the question and buttons
+            document.querySelector('h1').style.display = 'none';
+            document.querySelector('p').style.display = 'none';
+            buttonsDiv.style.display = 'none';
+
+            // Show the success message
+            document.getElementById('successMessage').style.display = 'block';
+
+            // You could also send a real email/text message here if this were a real server/app!
+        }
+    </script>
+</body>
+</html>
             margin
