@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Good Morning Crush Generator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            max-width: 90%;
+            width: 500px;
+        }
+
+        h1 {
+            color: #e84c70;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        #message-output {
+            background-color: #fff7f7;
+            border: 2px solid #ffccd5;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 12px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+            font-style: italic;
+            color: #555;
+            transition: all 0.3s ease;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #generate-btn {
+            background-color: #ff6b81;
+            color: white;
+        }
+
+        #generate-btn:hover {
+            background-color: #e84c70;
+            transform: translateY(-2px);
+        }
+
+        #copy-btn {
+            background-color: #a8dadc;
+            color: #1d3557;
+        }
+
+        #copy-btn:hover {
+            background-color: #8ac0c2;
+            transform: translateY(-2px);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #copy-status {
+            margin-top: 15px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>☀️ Good Morning, Jhy!</h1>
+        <p>Smile, always 😊😊</p>
+
+        <div id="message-output">
+            Click 'Generate Message' to start!
+        </div>
+
+        <div class="button-group">
+            <button id="generate-btn">Generate Message</button>
+            <button id="copy-btn" class="hidden">Copy Message</button>
+        </div>
+
+        <p id="copy-status" class="hidden">Copied!</p>
+    </div>
+
+    <script>
+        const messages = [
+            "Good morning! I hope your day is as bright as your smile. 😊",
+            "Waking up and thinking of you makes the morning instantly better. Have a great day!",
+            "Rise and shine! Sending you good vibes and coffee-fueled energy. ✨",
+            "Just wanted to say good morning to the person who makes my heart skip a beat. ❤️",
+            "Good morning! Remember that you're awesome and can conquer anything today.",
+            "I saw the sun rise, but honestly, your picture is still the best view. Have a lovely day!",
+            "Did you sleep well? Wishing you a day full of little wins and happy moments.",
+            "Hey! Hope you have a wonderful and productive morning. Talk soon! 😉",
+            "Good morning! You crossed my mind the second I woke up. Couldn't resist saying hi.",
+            "Wishing a beautiful day to a beautiful person. Good Morning! 🌸",
+        ];
+
+        const outputDiv = document.getElementById('message-output');
+        const generateBtn = document.getElementById('generate-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        const copyStatus = document.getElementById('copy-status');
+
+        function generateMessage() {
+            // Get a random index
+            const randomIndex = Math.floor(Math.random() * messages.length);
+            // Set the new message
+            outputDiv.textContent = messages[randomIndex];
+            // Show the copy button
+            copyBtn.classList.remove('hidden');
+            // Hide the status message
+            copyStatus.classList.add('hidden');
+        }
+
+        function copyMessage() {
+            const messageText = outputDiv.textContent;
+
+            // Use the modern Clipboard API
+            navigator.clipboard.writeText(messageText).then(() => {
+                // Show confirmation status
+                copyStatus.classList.remove('hidden');
+                // Hide copy status after 2 seconds
+                setTimeout(() => {
+                    copyStatus.classList.add('hidden');
+                }, 2000);
+            }).catch(err => {
+                // Fallback for older browsers or failed copy
+                console.error('Could not copy text: ', err);
+                copyStatus.textContent = "Copy failed. Please copy manually.";
+                copyStatus.style.color = "red";
+                copyStatus.classList.remove('hidden');
+            });
+        }
+
+        // Event Listeners
+        generateBtn.addEventListener('click', generateMessage);
+        copyBtn.addEventListener('click', copyMessage);
+
+        // Initial message generation when the page loads
+        generateMessage();
+
+    </script>
+</body>
+</html>
