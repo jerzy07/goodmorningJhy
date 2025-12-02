@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Night? 🍿</title>
+    <style>
+        /* CSS for Styling */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fce4ec; /* Light pink background */
+            text-align: center;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            max-width: 90%;
+            width: 450px;
+        }
+
+        h1 {
+            color: #d81b60; /* Deep pink */
+            margin-bottom: 20px;
+            font-size: 2.2em;
+        }
+
+        p {
+            color: #4a4a4a;
+            font-size: 1.1em;
+            margin-bottom: 35px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Reduced gap */
+            height: 50px; /* Define height for button container */
+            position: relative; /* For the 'No' button positioning */
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 8px 15px; /* Smaller padding */
+            border: none;
+            border-radius: 6px; /* Smaller border radius */
+            cursor: pointer;
+            font-size: 0.9em; /* Smaller font size */
+            transition: all 0.2s ease;
+            font-weight: bold;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #yesBtn {
+            background-color: #00bcd4; /* Teal for Yes */
+            color: white;
+            z-index: 10;
+        }
+
+        #yesBtn:hover {
+            background-color: #00acc1;
+            transform: scale(1.08);
+        }
+
+        #noBtn {
+            background-color: #ff5252; /* Bright red for No */
+            color: white;
+            position: absolute; /* Key for the running away effect */
+            transition: all 0s; /* No transition for movement, makes it instant and jarring */
+            z-index: 5;
+            pointer-events: none; /* ***NEW: Makes the button completely unclickable/ignores mouse events*** */
+            user-select: none; /* Prevents text selection on movement */
+        }
+
+        /* Success Message Styling */
+        #successMessage {
+            margin-top: 30px;
+            color: #00bcd4;
+            font-size: 1.4em;
+            font-weight: 600;
+            display: none; /* Hidden by default */
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Movie Date? 🎬</h1>
+        <p>I found the perfect movie. Are you in for this weekend? Say Yes! 🥰</p>
+
+        <div class="buttons">
+            <button id="yesBtn" class="btn" onclick="handleYes()">YES! Let's do it.</button>
+            <button id="noBtn" class="btn">No, maybe another time.</button>
+        </div>
+
+        <p id="successMessage">✨ **Perfect!** I knew you'd say yes! Texting you the plan now. Get ready for some popcorn! 🍿</p>
+    </div>
+
+    <script>
+        // JavaScript for the 'No' button magic
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const buttonsDiv = document.querySelector('.buttons');
+        const NO_BUTTON_WIDTH = 120; // Estimate the width for better bounding
+
+        // Function to make the 'No' button run away aggressively
+        noBtn.addEventListener('mouseover', () => {
+             // Use the parent container's size to calculate boundaries
+            const parentWidth = buttonsDiv.clientWidth;
+            const parentHeight = buttonsDiv.clientHeight;
+
+            // Generate new coordinates, ensuring the button stays within the boundaries
+            const newX = Math.random() * (parentWidth - NO_BUTTON_WIDTH);
+            const newY = Math.random() * (parentHeight - noBtn.offsetHeight);
+
+            noBtn.style.left = `${newX}px`;
+            noBtn.style.top = `${newY}px`;
+        });
+
+        // Set initial absolute position correctly on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialRect = noBtn.getBoundingClientRect();
+            const parentRect = buttonsDiv.getBoundingClientRect();
+
+            noBtn.style.position = 'absolute';
+            // Center the button horizontally in the container initially
+            noBtn.style.left = `${(parentRect.width - noBtn.offsetWidth) / 2}px`;
+            // Center vertically
+            noBtn.style.top = `${(parentRect.height - noBtn.offsetHeight) / 2}px`;
+        });
+
+
+        // Function to handle the 'Yes' click
+        function handleYes() {
+            // Hide the question and buttons
+            document.querySelector('h1').style.display = 'none';
+            document.querySelector('p:not(#successMessage)').style.display = 'none';
+            buttonsDiv.style.display = 'none';
+
+            // Show the success message
+            document.getElementById('successMessage').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
